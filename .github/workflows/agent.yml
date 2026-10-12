@@ -1,0 +1,28 @@
+# Validate, release to stage on merge, release to prod when a GitHub release is published (team approval).
+# All logic lives in agent-platform; nothing to install.
+name: agent
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: release the selected branch or tag to (rollback = pick an older tag)
+        type: choice
+        options: [stage, prod]
+
+jobs:
+  agent:
+    # Runs once the repo variable AGENT_CATALOG_ENABLED is 'true' (needs an agent-catalog repo and its GitHub App).
+    if: ${{ !github.event.repository.is_template && vars.AGENT_CATALOG_ENABLED == 'true' }}
+    uses: ovsec/agent-platform/.github/workflows/agent.yml@v1
+    with:
+      environment: ${{ inputs.environment || '' }}
+    permissions:
+      contents: read
+      packages: write
+    secrets: inherit

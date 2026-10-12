@@ -1,0 +1,8 @@
+langchain==1.4.4
+langchain-openai==1.7.0
+langgraph==1.2.14
+ag-ui-langgraph==0.0.47
+fastapi==0.143.0
+uvicorn==0.54.0
+httpx==0.28.1
+tzdata==2025.2

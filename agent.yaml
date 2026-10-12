@@ -1,0 +1,16 @@
+# Agent manifest v1 (agent-platform/schemas/agent.schema.json)
+slug: langchain-demo
+name: LangChain Demo
+description: 'Test agent built with LangChain: answers with tools (time, calculator, word count).'
+owner_team: platform
+tags: [test, langchain]
+runtime: agui
+agui:
+  host: langchain-demo:8000
+  path: /run
+access:
+  roles: [agent-user]
+starter_prompts:
+  - What time is it in Kolkata?
+  - What is (17 * 23) + 4 / 2?
+  - How many words are in "the quick brown fox jumps over the lazy dog"?

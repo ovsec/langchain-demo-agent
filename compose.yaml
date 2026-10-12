@@ -1,0 +1,19 @@
+# Runs this agent next to a local agent-platform stack: it joins the platform's Docker network, so the gateway
+# reaches it as langchain-demo:8000 and it reaches the model gateway as agentgateway:4102. Nothing in the
+# platform changes. Needs .env with GATEWAY_KEY (issued by the platform: LANGCHAIN_DEMO_GATEWAY_KEY there).
+name: langchain-demo-agent
+
+services:
+  langchain-demo:
+    build: .
+    environment:
+      OPENAI_BASE_URL: http://agentgateway:4102/v1
+      OPENAI_API_KEY: ${GATEWAY_KEY:?set GATEWAY_KEY in .env}
+      MODEL: ${MODEL:-ollama/qwen3:4b}
+    networks: [platform]
+    restart: unless-stopped
+
+networks:
+  platform:
+    name: agent-platform_default
+    external: true
